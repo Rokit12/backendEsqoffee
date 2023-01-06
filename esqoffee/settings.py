@@ -39,8 +39,9 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'drf_yasg',
 
-    'blog',
     'shop',
+    'blog',
+    'products',
 ]
 
 LOGIN_REDIRECT_URL = "/"
