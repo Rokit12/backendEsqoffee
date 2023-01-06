@@ -9,6 +9,11 @@ class PostCategory(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
 
+    class Meta:
+        ordering = ('name',)
+        verbose_name = 'Category'
+        verbose_name_plural = 'Categories'
+
     def __str__(self):
         return self.name
 
@@ -51,6 +56,8 @@ class PostComment(models.Model):
 
     class Meta:
         ordering = ["-created_at", "-updated_at"]
+        verbose_name = 'Comment'
+        verbose_name_plural = 'Comments'
 
 
 def create_slug(instance, new_slug=None):
