@@ -10,6 +10,9 @@ from .models import Post, PostComment, PostCategory
 User = get_user_model()
 
 
+# class PostCategoryListSerializer(serializers.ModelSerializer):
+
+
 class PostListSerializer(serializers.ModelSerializer):
     comments = serializers.SerializerMethodField(read_only=True)
 
