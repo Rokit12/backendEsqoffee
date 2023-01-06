@@ -22,8 +22,8 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-# ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = ['web-production-7aa3.up.railway.app']
+ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS = ['web-production-7aa3.up.railway.app']
 
 # Application definition
 
@@ -53,7 +53,7 @@ ROOT_URLCONF = 'esqoffee.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
