@@ -11,15 +11,56 @@ from rest_framework.generics import (
 )
 
 from .pagination import PostLimitOffsetPagination
-from .models import Post, PostComment
+from .models import Post, PostComment, PostCategory
 from .permissions import IsOwnerOrReadOnly
 from .mixins import MultipleFieldLookupMixin
 from .serializers import (
+    PostCategoryListSerializer,
     PostListSerializer,
     PostDetailSerializer,
     CommentSerializer,
     CommentCreateUpdateSerializer,
 )
+
+
+class ListCategoryAPIView(ListAPIView):
+    """
+    get:
+        Returns a list of all existing categories
+    """
+    queryset = PostCategory.objects.all()
+    serializer_class = PostCategoryListSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    pagination_class = PostLimitOffsetPagination
+
+
+class ListCategoryDetailAPIView(ListAPIView):
+    """
+       get:
+           Returns the list of posts on a particular category
+       """
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get(self, request, slug):
+        category = PostCategory.objects.get(slug=slug)
+        posts = Post.objects.filter(category=category)
+        serializer = PostListSerializer(posts, many=True)
+        return Response(serializer.data, status=200)
+
+
+class ListCommentAPIView(APIView):
+    """
+    get:
+        Returns the list of comments on a particular post
+    """
+
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get(self, request, slug):
+        post = Post.objects.get(slug=slug)
+        comments = PostComment.objects.filter(post=post)
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data, status=200)
 
 
 class ListPostAPIView(ListAPIView):

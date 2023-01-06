@@ -1,6 +1,3 @@
-import os
-
-from django.conf import settings
 from django.contrib.auth import get_user_model
 
 from rest_framework import serializers
@@ -10,7 +7,21 @@ from .models import Post, PostComment, PostCategory
 User = get_user_model()
 
 
-# class PostCategoryListSerializer(serializers.ModelSerializer):
+class PostCategoryListSerializer(serializers.ModelSerializer):
+    posts = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = PostCategory
+        fields = [
+            'id',
+            'name',
+            'slug',
+            'posts',
+        ]
+
+    def get_posts(self, obj):
+        qs = Post.objects.filter(category=obj).count()
+        return qs
 
 
 class PostListSerializer(serializers.ModelSerializer):
