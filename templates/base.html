@@ -49,10 +49,8 @@
   {% include "includes/navbar.html" %}
 
   <body>
-    {% block content %} 
-    {% endblock content %} 
-    {% block extra_body %} 
-    {% endblock %} 
+    {% block content %}{% endblock content %} 
+    {% comment %} {% block extra_body %} {% endblock %}  {% endcomment %}
     {% include "includes/footer.html" %}
 
     <!-- loader -->
