@@ -31,6 +31,7 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('', include('shop.urls')),
     path('blog/', include('blog.urls')),
+    path('api/blog/', include('blog.api.urls')),
 ]
 
 if settings.DEBUG:

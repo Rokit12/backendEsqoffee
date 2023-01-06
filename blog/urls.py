@@ -1,15 +1,9 @@
 from django.urls import path
+from . import views
 
-from .views import (
-    ListCategoryDetailAPIView,
-    ListCategoryAPIView,
-    ListPostAPIView,
-    DetailPostAPIView,
-)
+app_name = 'blog'
 
 urlpatterns = [
-    path('', ListPostAPIView.as_view(), name="list"),
-    path('<slug:slug>/detail/', DetailPostAPIView.as_view(), name="detail"),
-    path('categories/', ListCategoryAPIView.as_view(), name="categories"),
-    path('categories/<slug:slug>/', ListCategoryDetailAPIView.as_view(), name="category_detail"),
+    path('', views.index, name='index'),
 ]
+
