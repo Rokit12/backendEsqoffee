@@ -1,5 +1,10 @@
 from django.contrib import admin
-from .models import Category, Product
+from .models import Feature, Category, Product
+
+
+@admin.register(Feature)
+class FeatureAdmin(admin.ModelAdmin):
+    list_display = ['title', 'subtitle']
 
 
 @admin.register(Category)

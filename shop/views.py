@@ -1,14 +1,23 @@
 from django.shortcuts import render
+from .models import Feature
 
 
 def index(response):
-	return render(response, "home.html")
+	template = 'home.html'
+
+	features = Feature.objects.all()
+	context = {
+		'features': features,
+	}
+	return render(response, template, context)
+
 
 def about(response):
-	return render(response, "about.html")
+	template = 'about.html'
 
-def contact(response):
-	return render(response, "contact.html")
+	return render(response, template)
+
 
 def services(response):
-	return render(response, "services.html")
+	template = 'services.html'
+	return render(response, template)
