@@ -75,26 +75,18 @@ class ListPostAPIView(ListAPIView):
     pagination_class = PostLimitOffsetPagination
 
 
-class DetailPostAPIView(RetrieveUpdateDestroyAPIView):
+class DetailPostAPIView(APIView):
     """
     get:
         Returns the details of a post instance. Searches post using slug field.
-
-    put:
-        Updates an existing post. Returns updated post data
-
-        parameters: [slug, title, body, description, image]
-
-    delete:
-        Delete an existing post
-
-        parameters = [slug]
     """
 
-    queryset = Post.objects.all()
-    lookup_field = "slug"
-    serializer_class = PostDetailSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get(self, request, slug):
+        post = Post.objects.get(slug=slug)
+        serializer = PostDetailSerializer(post, many=False)
+        return Response(serializer.data, status=200)
 
 
 class CreateCommentAPIView(APIView):
