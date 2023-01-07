@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     'shop',
     'blog',
+    'contact',
     'products',
 ]
 
