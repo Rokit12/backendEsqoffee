@@ -1,8 +1,13 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models.signals import pre_save
 from django.utils import timezone
-from django.utils.text import slugify
+from django.urls import reverse
+from taggit.managers import TaggableManager
+
+
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(status='published')
 
 
 class PostCategory(models.Model):
@@ -23,58 +28,47 @@ class Post(models.Model):
         ('draft', 'Draft'),
         ('published', 'Published'),
     )
-    image = models.ImageField(upload_to='media', blank=True, null=True)
-    title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255, unique_for_date='publish')
-    body = models.TextField()
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+    title = models.CharField(max_length=250)
+    slug = models.SlugField(max_length=250, unique_for_date='publish')
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blog_posts')
-    category = models.ForeignKey(PostCategory, null=True, on_delete=models.PROTECT, related_name='category_set')
+    body = models.TextField()
     publish = models.DateTimeField(default=timezone.now)
-    created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
+    category = models.ForeignKey(PostCategory,
+                                 on_delete=models.SET_NULL,
+                                 related_name='blog_posts',
+                                 blank=True,
+                                 null=True)
+    objects = models.Manager()
+    published = PublishedManager()
+    tags = TaggableManager()
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ('-publish',)
 
     def __str__(self):
-        return f'{self.title} | {str(self.author)}'
+        return self.title
 
-    @property
-    def comments(self):
-        instance = self
-        qs = PostComment.objects.filter(parent=instance)
-        return qs
+    def get_absolute_url(self):
+        return reverse('blog:post_detail',
+                       args=[self.publish.year,
+                             self.publish.month,
+                             self.publish.day, self.slug])
 
 
-class PostComment(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    name = models.CharField(max_length=80)
+    email = models.EmailField()
     body = models.TextField()
-    created_at = models.DateTimeField(auto_now=False, auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True, auto_now_add=False)
+    active = models.BooleanField(default=True)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ["-created_at", "-updated_at"]
-        verbose_name = 'Comment'
-        verbose_name_plural = 'Comments'
+        ordering = ('created',)
 
-
-def create_slug(instance, new_slug=None):
-    slug = slugify(instance.title)
-    if new_slug is not None:
-        slug = new_slug
-    qs = Post.objects.filter(slug=slug).order_by("-id")
-    exists = qs.exists()
-    if exists:
-        new_slug = "%s-%s" % (slug, qs.first().id)
-        return create_slug(instance, new_slug=new_slug)
-    return slug
-
-
-def pre_save_post_receiver(sender, instance, *args, **kwargs):
-    if not instance.slug:
-        instance.slug = create_slug(instance)
-
-
-pre_save.connect(pre_save_post_receiver, sender=Post)
+    def __str__(self):
+        return f'Comment by {self.name} on {self.post}'
