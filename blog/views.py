@@ -7,7 +7,7 @@ from django.views.generic import ListView
 
 from taggit.models import Tag
 
-from .models import Post, Comment
+from .models import Post, PostCategory, Comment
 from .forms import EmailPostForm, CommentForm, SearchForm
 
 
@@ -48,15 +48,30 @@ def post_list(request, tag_slug=None):
     return render(request, template, context)
 
 
-def post_detail(request, slug):
+def post_detail(request, post_id):
     template = 'blog/detail.html'
 
-    post = get_object_or_404(Post, slug=slug, status='published')
+    categories = PostCategory.objects.all()
+    post = get_object_or_404(Post, id=post_id, status='published')
 
     # List of active comments for this post
     comments = post.comments.filter(active=True)
 
-    new_comment = None
+    # List of similar posts
+    post_tags_ids = post.tags.values_list('id', flat=True)
+    similar_posts = Post.published.filter(tags__in=post_tags_ids).exclude(id=post.id)
+    similar_posts = similar_posts.annotate(same_tags=Count('tags')).order_by('-same_tags', '-publish')[:4]
+
+    new_comment = CommentForm()
+
+    context = {
+        'categories': categories,
+        'post': post,
+        'comments': comments,
+        'comment_form': new_comment,
+        'new_comment': new_comment,
+        'similar_posts': similar_posts
+    }
 
     if request.method == 'POST':
         # A comment was posted
@@ -68,23 +83,11 @@ def post_detail(request, slug):
             new_comment.post = post
             # Save the comment to the database
             new_comment.save()
+            return render(request, template, context)
     else:
         comment_form = CommentForm()
 
-    # List of similar posts
-    post_tags_ids = post.tags.values_list('id', flat=True)
-    similar_posts = Post.published.filter(tags__in=post_tags_ids) \
-        .exclude(id=post.id)
-    similar_posts = similar_posts.annotate(same_tags=Count('tags')) \
-                        .order_by('-same_tags', '-publish')[:4]
-
-    context = {
-        'post': post,
-        'comments': comments,
-        'new_comment': new_comment,
-        'comment_form': comment_form,
-        'similar_posts': similar_posts
-    }
+    context['comment_form'] = comment_form
 
     return render(request, template, context)
 
