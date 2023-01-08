@@ -44,6 +44,7 @@ def post_list(request, tag_slug=None):
         'posts': posts,
         'tag': tag,
     }
+    print(posts.end_index())
     return render(request, template, context)
 
 

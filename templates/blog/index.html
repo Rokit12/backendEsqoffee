@@ -1,2 +1,59 @@
-{% extends "pages/../base.html" %}
+{% extends "base.html" %}
+{% load blog_tags %}
 
+{% block title %}Blog{% endblock %}
+{% block content %}
+    <section class="home-slider owl-carousel">
+        <div class="slider-item" style="background-image: url(/static/images/bg_3.jpg);"
+             data-stellar-background-ratio="0.5">
+            <div class="overlay"></div>
+            <div class="container">
+                <div class="row slider-text justify-content-center align-items-center">
+                    <div class="col-md-7 col-sm-12 text-center ftco-animate">
+                        <h1 class="mb-3 mt-5 bread">Blog</h1>
+                        <p class="breadcrumbs">
+                            <span class="mr-2"><a href="{% url 'home' %}">Home</a></span>
+                            <span>Blog</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row d-flex">
+                {% for post in posts %}
+                    <div class="col-md-4 d-flex ftco-animate">
+                        <div class="blog-entry align-self-stretch">
+                            {% if post.poster %}
+                                <a href="{{ post.get_absolute_url }}" class="block-20"
+                                   style="background-image: url({{ post.poster.url }});">
+                                </a>
+                            {% else %}
+                                <a href="{{ post.get_absolute_url }}" class="block-20"
+                                   style="background-image: url('/static/images/image_1.jpg');">
+                                </a>
+                            {% endif %}
+                            <div class="text py-4 d-block">
+                                <div class="meta">
+                                    <div><a href="{{ post.get_absolute_url }}">{{ post.publish }}</a></div>
+                                    <div><a href="{{ post.get_absolute_url }}">{{ post.author }}</a></div>
+                                    <div>
+                                        <a href="{{ post.get_absolute_url }}" class="meta-chat">
+                                            <span class="icon-chat"></span> {{ post.comments.count }}
+                                        </a>
+                                    </div>
+                                </div>
+                                <h3 class="heading mt-2"><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h3>
+                                <p>{{ post.body|markdown|truncatewords_html:30 }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {% include "includes/pagination.html" with page=posts %}
+        </div>
+    </section>
+{% endblock %}
