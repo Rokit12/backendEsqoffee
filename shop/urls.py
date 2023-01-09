@@ -1,8 +1,10 @@
-from django.urls import path
+from django.urls import path, include
 from .views import index, about, services
 
 urlpatterns = [
     path('', index, name='home'),
-    path('about', about, name='about'),
-    path('services', services, name='services'),
+    path('menu/', include('shop.products.urls', namespace='menu')),
+    path('cart/', include('shop.cart.urls', namespace='cart')),
+    path('about/', about, name='about'),
+    path('services/', services, name='services'),
 ]

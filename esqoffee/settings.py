@@ -26,6 +26,7 @@ ALLOWED_HOSTS = ['*']
 # ALLOWED_HOSTS = ['web-production-7aa3.up.railway.app']
 
 SITE_ID = 1
+CART_SESSION_ID = 'cart'
 
 # Application definition
 

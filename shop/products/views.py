@@ -3,7 +3,7 @@ from .models import ProductCategory, Product
 
 
 def product_list(request, category_slug=None):
-    template = 'shop/product/list.html'
+    template = 'menu/index.html'
 
     category = None
     categories = ProductCategory.objects.all()
@@ -23,7 +23,7 @@ def product_list(request, category_slug=None):
 
 
 def product_detail(request, id, slug):
-    template = 'shop/product/detail.html'
+    template = 'menu/detail.html'
 
     product = get_object_or_404(Product, id=id, slug=slug, available=True)
     context = {
