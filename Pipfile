@@ -32,6 +32,8 @@ urllib3 = "==1.26.3"
 gunicorn = "*"
 markdown = "*"
 django-taggit = "*"
+celery = "*"
+redis = "*"
 
 [dev-packages]
 
