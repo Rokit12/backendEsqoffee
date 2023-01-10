@@ -157,3 +157,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REDIS_HOST = 'containers-us-west-79.railway.app'
+REDIS_PORT = 6642
+REDIS_USER = 'default'
+REDIS_PASSWORD = 'HaWbUcMwDpmkReV3zxxc'
+REDIS_DB = 1
