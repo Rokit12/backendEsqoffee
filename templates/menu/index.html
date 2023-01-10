@@ -162,21 +162,26 @@
                                                 <div class="col-md-4 text-center">
                                                     <div class="menu-wrap">
                                                         {% if product.image %}
-                                                            <a href="#" class="menu-img img mb-4"
+                                                            <a href="{{ product.get_absolute_url }}"
+                                                               class="menu-img img mb-4"
                                                                style="background-image: url({{ product.image.url }});"></a>
                                                         {% else %}
-                                                            <a href="#" class="menu-img img mb-4"
+                                                            <a href="{{ product.get_absolute_url }}"
+                                                               class="menu-img img mb-4"
                                                                style="background-image: url(/static/images/delicious.png);"></a>
                                                         {% endif %}
                                                         <div class="text">
-                                                            <h3><a href="#">{{ product.name }}</a></h3>
+                                                            <h3>
+                                                                <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                                                            </h3>
                                                             <p>{{ product.description }}</p>
                                                             <p class="price"><span>KES {{ product.price }}</span></p>
-                                                            <p>
-                                                                <a href="#" class="btn btn-primary btn-outline-primary">
-                                                                    Add to cart
-                                                                </a>
-                                                            </p>
+                                                            <form action="{% url "cart:cart_add" product.id %}"
+                                                                  method="post">
+                                                                {{ cart_product_form }}
+                                                                {% csrf_token %}
+                                                                <input class="btn btn-primary btn-outline-primary" type="submit" value="Add to cart">
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>

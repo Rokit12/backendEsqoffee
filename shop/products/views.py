@@ -15,10 +15,12 @@ def product_list(request, category_slug=None):
         category = get_object_or_404(ProductCategory, slug=category_slug)
         products = products.filter(category=category)
 
+    cart_product_form = CartAddProductForm()
     context = {
         'category': category,
         'categories': categories,
         'products': products,
+        'cart_product_form': cart_product_form,
     }
 
     return render(request, template, context)
