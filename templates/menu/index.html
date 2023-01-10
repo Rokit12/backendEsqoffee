@@ -176,9 +176,7 @@
                                                             </h3>
                                                             <p>{{ product.description }}</p>
                                                             <p class="price"><span>KES {{ product.price }}</span></p>
-                                                            <form action="{% url "cart:cart_add" product.id %}"
-                                                                  method="post">
-                                                                {{ cart_product_form }}
+                                                            <form action="{% url "cart:cart_add" product.id %}" method="post">
                                                                 {% csrf_token %}
                                                                 <input class="btn btn-primary btn-outline-primary" type="submit" value="Add to cart">
                                                             </form>
