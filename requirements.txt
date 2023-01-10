@@ -1,6 +1,7 @@
 -i https://pypi.org/simple
 amqp==5.1.1 ; python_version >= '3.6'
 asgiref==3.3.1
+async-timeout==4.0.2 ; python_version >= '3.6'
 billiard==3.6.4.0
 celery==5.2.2
 certifi==2020.12.5
@@ -31,6 +32,7 @@ prompt-toolkit==3.0.36 ; python_full_version >= '3.6.2'
 pyjwt==2.0.1
 pyparsing==2.4.7
 pytz==2020.5
+redis==4.4.1
 requests==2.25.1
 ruamel.yaml==0.16.12
 ruamel.yaml.clib==0.2.7 ; python_version < '3.9' and platform_python_implementation == 'CPython'
