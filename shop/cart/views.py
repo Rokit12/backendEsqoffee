@@ -14,7 +14,7 @@ def cart_add(request, product_id):
     if form.is_valid():
         cd = form.cleaned_data
         cart.add(product=product,
-                 quantity=1,
+                 quantity=cd['quantity'],
                  override_quantity=cd['override'])
     else:
         cart.add(product=product, quantity=1, override_quantity=False)
