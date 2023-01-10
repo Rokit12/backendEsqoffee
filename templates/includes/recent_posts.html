@@ -1,0 +1,39 @@
+<div class="col-lg-4 col-md-6 mb-5 mb-md-5">
+    <div class="ftco-footer-widget mb-4">
+        <h2 class="ftco-heading-2">Recent Blog</h2>
+        {% for post in latest_posts %}
+            <div class="block-21 mb-4 d-flex">
+                {% if post.poster %}
+                    <a class="blog-img mr-4" style="background-image: url({{ post.poster.url }});"></a>
+                {% else %}
+                    <a class="blog-img mr-4" style="background-image: url(/static/images/delicious.png);"></a>
+                {% endif %}
+
+                <div class="text">
+                    <h3 class="heading">
+                        <a href="{{ post.get_absolute_url }}">
+                            {{ post.title }}
+                        </a>
+                    </h3>
+                    <div class="meta">
+                        <div>
+                            <a href="{{ post.get_absolute_url }}">
+                                <span class="icon-calendar"></span> {{ post.publish }}
+                            </a>
+                        </div>
+                        <div>
+                            <a href="{{ post.get_absolute_url }}">
+                                <span class="icon-person"></span>{{ post.author }}
+                            </a>
+                        </div>
+                        <div>
+                            <a href="{{ post.get_absolute_url }}">
+                                <span class="icon-chat"></span> {{ post.comments.count }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
