@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'shop.cart',
     'shop.coupons',
     'shop.orders',
+    'shop.payment',
     'shop.products',
 ]
 
