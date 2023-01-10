@@ -37,6 +37,7 @@ redis = "*"
 weasyprint = "*"
 flower = "*"
 braintree = "*"
+django-phonenumber-field = {extras = ["phonenumbers"], version = "*"}
 
 [dev-packages]
 

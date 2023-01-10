@@ -56,6 +56,8 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'taggit',
 
+    'phonenumber_field',
+
     'blog',
     'contact',
     'shop',
