@@ -5,8 +5,7 @@
                 {% if page.has_previous %}
                     <li><a href="?page={{ page.previous_page_number }}">&lt;</a></li>
                 {% endif %}
-                    <li {% if page.number == 1 %}class="active"{% endif %}><span>{{ page.number }}</span></li>
-{#                    <li {% if page.number == p %}class="active"{% endif %}><a href="#">{{ p }}</a></li>#}
+                <li {% if page.number == 1 %}class="active"{% endif %}><span>{{ page.number }}</span></li>
                 {% if page.has_next %}
                     <li><a href="?page={{ page.next_page_number }}">&gt;</a></li>
                 {% endif %}
