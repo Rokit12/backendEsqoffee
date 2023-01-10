@@ -21,7 +21,7 @@
         </div>
     </section>
     <section class="ftco-section">
-        <form class="container" action="#" method="post">
+        <form class="container" method="post">
             {% csrf_token %}
             <div class="row">
                 <div class="col-xl-8 ftco-animate">
@@ -57,7 +57,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="streetaddress">Street Address</label>
-                                     {{ form.address }}
+                                    {{ form.address }}
                                 </div>
                             </div>
                             <div class="col-md-6"></div>
@@ -65,13 +65,13 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="towncity">Town / City</label>
-                                     {{ form.city }}
+                                    {{ form.city }}
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="postcodezip">Postcode / ZIP *</label>
-                                     {{ form.postal_code }}
+                                    {{ form.postal_code }}
                                 </div>
                             </div>
                             <div class="w-100"></div>
@@ -104,22 +104,17 @@
                         <div class="col-md-6">
                             <div class="cart-detail ftco-bg-dark p-3 p-md-4">
                                 <h3 class="billing-heading mb-4">Payment Method</h3>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <div class="radio">
-                                            <label>
-                                                <input type="radio" name="optradio" class="mr-2">M-pesa
-                                            </label>
+                                {% for subfield in form.payment_option %}
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <div class="radio">
+                                                <label>
+                                                    {{ subfield }}{{ subfield.label }}
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-md-12">
-                                        <div class="radio">
-                                            <label><input type="radio" name="optradio" class="mr-2"> Card/Other Payments</label>
-                                        </div>
-                                    </div>
-                                </div>
+                                {% endfor %}
                                 <p>
                                     <input type="submit" class="btn btn-primary py-3 px-4" value="Place an order"/>
                                 </p>

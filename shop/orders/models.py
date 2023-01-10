@@ -9,15 +9,21 @@ from shop.coupons.models import Coupon
 
 
 class Order(models.Model):
+    PAYMENT_OPTIONS = (
+        ('cash', 'Cash'),
+        ('mpesa', 'M-Pesa'),
+        ('other', 'Other'),
+    )
     braintree_id = models.CharField(max_length=150, blank=True)
     first_name = models.CharField(_('first name'), max_length=50)
     last_name = models.CharField(_('last name'), max_length=50)
-    phone = PhoneNumberField(_('phone'), max_length=30, blank=False, null=False)
+    phone = models.CharField(_('phone'), max_length=30, blank=False, null=False)
     email = models.EmailField(_('e-mail'))
     address = models.CharField(_('address'), max_length=250)
     postal_code = models.CharField(_('postal code'), max_length=20)
     city = models.CharField(_('city'), max_length=100)
     paid = models.BooleanField(default=False)
+    payment_option = models.CharField(max_length=10, choices=PAYMENT_OPTIONS, default='mpesa')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     coupon = models.ForeignKey(Coupon,
