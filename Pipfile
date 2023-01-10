@@ -35,6 +35,8 @@ django-taggit = "*"
 celery = "*"
 redis = "*"
 weasyprint = "*"
+flower = "*"
+braintree = "*"
 
 [dev-packages]
 

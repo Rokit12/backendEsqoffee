@@ -1,0 +1,49 @@
+<div class="col-xl-4 sidebar ftco-animate">
+    <div class="sidebar-box ftco-animate">
+        <div class="categories">
+            <h3>Categories</h3>
+            {% for category in categories %}
+                <li><a href="#">{{ category.name }} <span>({{ category.products.all.count }})</span></a></li>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="sidebar-box ftco-animate">
+        <h3>Recent Posts</h3>
+        {% for post in recent_posts %}
+            <div class="block-21 mb-4 d-flex">
+                {% if post.poster %}
+                    <a class="blog-img mr-4" style="background-image: url({{ post.poster.url }});"></a>
+                {% else %}
+                    <a class="blog-img mr-4"
+                       style="background-image: url(/static/images/image_1.jpg);"></a>
+                {% endif %}
+                <div class="text">
+                    <h3 class="heading">
+                        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                    </h3>
+                    <div class="meta">
+                        <div><a href="{{ post.get_absolute_url }}"><span
+                                class="icon-calendar"></span>{{ post.publish }}</a></div>
+                        <div><a href="{{ post.get_absolute_url }}"><span
+                                class="icon-person"></span> {{ post.author }}</a></div>
+                        <div><a href="{{ post.get_absolute_url }}"><span
+                                class="icon-chat"></span> {{ post.comments.count }}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            There are no similar posts yet.
+        {% endfor %}
+    </div>
+
+    <div class="sidebar-box ftco-animate">
+        <h3>Tag Cloud</h3>
+        <div class="tagcloud">
+            {% for category in categories %}
+                <a href="{% url 'blog:post_list_by_tag' category.slug %}" class="tag-cloud-link">{{ category.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+</div>

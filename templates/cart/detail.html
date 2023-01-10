@@ -69,16 +69,16 @@
                                         <td class="price">KES {{ item.price }}</td>
                                         <td class="quantity">
                                             <form action="{% url "cart:cart_add" product.id %}" method="post">
-                                                    {{ item.update_quantity_form.quantity }}
-                                                    {{ item.update_quantity_form.override }}
-                                                    <button type="submit" class="quantity-right-plus btn"
-                                                            data-type="plus"
-                                                            data-field="">
-                                                        <i class="icon-refresh"></i>
-                                                    </button>
-                                                    {#                                                <input type="submit" value="Update">#}
-                                                    {% csrf_token %}
-                                                </form>
+                                                {{ item.update_quantity_form.quantity }}
+                                                {{ item.update_quantity_form.override }}
+                                                <button type="submit" class="quantity-right-plus btn"
+                                                        data-type="plus"
+                                                        data-field="">
+                                                    <i class="icon-refresh"></i>
+                                                </button>
+                                                {#                                                <input type="submit" value="Update">#}
+                                                {% csrf_token %}
+                                            </form>
                                             <div class="input-group mb-3">
 
                                                 {#                                                <input type="text" name="quantity"#}
@@ -117,11 +117,11 @@
                             <span>KES {{ cart.get_total_price_after_discount|floatformat:2 }}</span>
                         </p>
                     </div>
-                    {#                    <p class="text-center">#}
-                    {#                        <a href="{% url "orders:order_create" %}" class="btn btn-primary py-3 px-4">#}
-                    {#                            Proceed to Checkout#}
-                    {#                        </a>#}
-                    {#                    </p>#}
+                    <p class="text-center">
+                        <a href="{% url "orders:order_create" %}" class="btn btn-primary py-3 px-4">
+                            Proceed to Checkout
+                        </a>
+                    </p>
                     <p class="text-center">
                         <a href="{% url "menu:product_list" %}" class="btn btn-primary py-3 px-4">
                             Continue Shopping
