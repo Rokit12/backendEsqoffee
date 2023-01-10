@@ -141,16 +141,56 @@
                             <div class="nav ftco-animate nav-pills justify-content-center" id="v-pills-tab"
                                  role="tablist" aria-orientation="vertical">
                                 {% for category in categories %}
-                                    <a class="nav-link" id="{{ category.slug }}-tab" data-toggle="pill"
-                                       href="#{{ category.slug }}" role="tab" aria-controls="{{ category.slug }}-1"
-                                       aria-selected="true">
+                                    <a id="v-pills-{{ forloop.counter }}-tab"
+                                       class="nav-link"
+                                       data-toggle="pill"
+                                       href="#v-pills-{{ forloop.counter }}"
+                                       role="tab" aria-controls="v-pills-{{ forloop.counter }}" aria-selected="true">
                                         {{ category.name }}
                                     </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-flex align-items-center">
+                            <div class="tab-content ftco-animate" id="v-pills-tabContent">
+                                {% for category in categories %}
+                                    <div id="v-pills-{{ forloop.counter }}" role="tabpanel"
+                                         class="tab-pane fade {% if forloop.counter == 1 %} active show {% endif %}"
+                                         aria-labelledby="v-pills-{{ forloop.counter }}-tab">
+                                        <div class="row">
+                                            {% for product in category.products.all %}
+                                                <div class="col-md-4 text-center">
+                                                    <div class="menu-wrap">
+                                                        {% if product.image %}
+                                                            <a href="#" class="menu-img img mb-4"
+                                                               style="background-image: url({{ product.image.url }});"></a>
+                                                        {% else %}
+                                                            <a href="#" class="menu-img img mb-4"
+                                                               style="background-image: url(/static/images/delicious.png);"></a>
+                                                        {% endif %}
+                                                        <div class="text">
+                                                            <h3><a href="#">{{ product.name }}</a></h3>
+                                                            <p>{{ product.description }}</p>
+                                                            <p class="price"><span>KES {{ product.price }}</span></p>
+                                                            <p>
+                                                                <a href="#" class="btn btn-primary btn-outline-primary">
+                                                                    Add to cart
+                                                                </a>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% empty %}
+                                                <div class="text-center">No products yet!</div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
                                 {% endfor %}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
     </section>
 {% endblock %}
