@@ -18,8 +18,6 @@ def order_create(request):
     cart = Cart(request)
     if request.method == 'POST':
         form = OrderCreateForm(request.POST)
-        field_errors = [(field.label, field.errors) for field in form]
-        print(field_errors)
         if form.is_valid():
             order = form.save(commit=False)
             if cart.coupon:
