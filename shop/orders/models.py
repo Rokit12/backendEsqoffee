@@ -14,6 +14,10 @@ class Order(models.Model):
         ('mpesa', 'M-Pesa'),
         ('other', 'Other'),
     )
+    PICKUP_OPTIONS = (
+        ('pickup', 'Pickup'),
+        ('delivered', 'Delivered'),
+    )
     braintree_id = models.CharField(max_length=150, blank=True)
     first_name = models.CharField(_('first name'), max_length=50)
     last_name = models.CharField(_('last name'), max_length=50)
@@ -23,6 +27,7 @@ class Order(models.Model):
     postal_code = models.CharField(_('postal code'), max_length=20)
     city = models.CharField(_('city'), max_length=100)
     paid = models.BooleanField(default=False)
+    pickup = models.CharField(max_length=10, choices=PICKUP_OPTIONS, default='pickup')
     payment_option = models.CharField(max_length=10, choices=PAYMENT_OPTIONS, default='mpesa')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

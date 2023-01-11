@@ -75,6 +75,17 @@
                                 </div>
                             </div>
                             <div class="w-100"></div>
+                            <div class="col-md-12">
+                                <div class="form-group mt-4">
+                                    <div class="radio">
+                                        {% for subfield in form.pickup %}
+                                            <label class="mr-3">
+                                                {{ subfield }}{{ subfield.label }}
+                                            </label>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div><!-- END -->
 

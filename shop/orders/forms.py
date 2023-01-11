@@ -1,11 +1,15 @@
-from django.forms import ModelForm, TextInput, ChoiceField, RadioSelect
+from django.forms import ModelForm, TextInput, ChoiceField, RadioSelect, BooleanField
 
 from .models import Order
 
 PAYMENT_OPTIONS = [
     ('cash', 'Cash'),
     ('mpesa', 'M-Pesa'),
-    ('other', 'Other'),
+    ('other', 'Card/Other'),
+]
+PICKUP_OPTIONS = [
+    ('pickup', 'Pickup'),
+    ('delivered', 'Delivery'),
 ]
 
 
@@ -14,10 +18,15 @@ class OrderCreateForm(ModelForm):
         widget=RadioSelect(attrs={'class': 'mr-2'}),
         choices=PAYMENT_OPTIONS,
     )
+    pickup = ChoiceField(
+        widget=RadioSelect(attrs={'class': 'mr-2'}),
+        choices=PICKUP_OPTIONS,
+    )
 
     class Meta:
         model = Order
-        fields = ['first_name', 'last_name', 'email', 'phone', 'address', 'postal_code', 'city', 'payment_option']
+        fields = ['first_name', 'last_name', 'email', 'phone', 'address', 'postal_code', 'city', 'payment_option',
+                  'pickup']
         widgets = {
             'first_name': TextInput(attrs={
                 'class': "form-control",
