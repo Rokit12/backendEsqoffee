@@ -62,13 +62,15 @@ def order_process(request):
                 elif phone_number[0] == "0":
                     phone_number = "254" + phone_number[1:]
 
-                gateway_mpesa.stk_push(
+                gateway_mpesa.access_token()
+                a = gateway_mpesa.stk_push(
                     phone_number,
                     amount,
                     account_reference,
                     order.id,
                     f"https://{request.META['HTTP_HOST']}/payment/mpesa/callback"
                 )
+                print(a.error_message)
 
                 return redirect(reverse('payment:done'))
             else:

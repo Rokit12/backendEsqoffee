@@ -8,5 +8,6 @@ urlpatterns = [
     path(_('process/'), views.payment_process, name='process'),
     path(_('done/'), views.payment_done, name='done'),
     path(_('canceled/'), views.payment_canceled, name='canceled'),
-    path(_('mpesa/callback/'), views.mpesa_callback, name='mpesa_callback'),
+    path(_('mpesa/checkout/'), views.MpesaCheckout.as_view(), name="mpesa_checkout"),
+    path(_('mpesa/callback/'), views.MpesaCallBack.as_view(), name="mpesa_callback"),
 ]

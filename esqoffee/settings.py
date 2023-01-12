@@ -39,9 +39,9 @@ INSTALLED_APPS = [
 
     'django.contrib.sites',
     'django.contrib.sitemaps',
-    'taggit',
     'rest_framework',
 
+    'taggit',
     'phonenumber_field',
     'django_daraja',
 

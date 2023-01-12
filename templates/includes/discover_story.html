@@ -1,0 +1,16 @@
+{% load shop_tags %}
+
+<section class="ftco-about d-md-flex">
+    <div class="one-half img" style="background-image: url(/static/images/about.jpg);"></div>
+    <div class="one-half ftco-animate">
+        <div class="overlap">
+            <div class="heading-section ftco-animate ">
+                <span class="subheading">{{ story.subtitle }}</span>
+                <h2 class="mb-4">{{ story.title }}</h2>
+            </div>
+            <div>
+                <p>{{ story.story }}</p>
+            </div>
+        </div>
+    </div>
+</section>
