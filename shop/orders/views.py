@@ -67,7 +67,7 @@ def order_process(request):
                     'phone_number': phone_number,
                     'account_reference': account_reference,
                     'transaction_description': account_reference,
-                    'callback_url': f"https://{request.META['HTTP_HOST']}/payment/mpesa/callback"
+                    'callback_url': f"https://{request.META['HTTP_HOST']}/payment/mpesa/callback/"
                 }
                 gateway_mpesa.stk_push_request(payload)
 

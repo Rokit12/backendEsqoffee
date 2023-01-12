@@ -102,14 +102,13 @@ class MpesaGateway:
             "TransactionDesc": transaction_description,
         }
 
-        res = requests.post(
-            callback_url, json=req_data, headers=self.headers, timeout=30
-        )
-        res_data = res.json()
+        response = requests.post(self.checkout_url, json=req_data, headers=self.headers, timeout=30)
+        logging.info('Mpesa response {}'.format(response))
+        res_data = response.json()
         logging.info("Mpesa request data {}".format(req_data))
         logging.info("Mpesa response info {}".format(res_data))
 
-        if res.ok:
+        if response.ok:
             data["ip"] = request.META.get("REMOTE_ADDR")
             data["checkout_request_id"] = res_data["CheckoutRequestID"]
 
