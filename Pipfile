@@ -38,6 +38,8 @@ weasyprint = "*"
 flower = "*"
 braintree = "*"
 django-phonenumber-field = {extras = ["phonenumbers"], version = "*"}
+django-daraja = "*"
+djangorestframework = "*"
 
 [dev-packages]
 

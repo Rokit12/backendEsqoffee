@@ -29,29 +29,6 @@ ALLOWED_HOSTS = ['*']
 SITE_ID = 1
 CART_SESSION_ID = 'cart'
 
-# Email settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp-mail.outlook.com'
-EMAIL_USE_TLS = False
-EMAIL_USE_SSL = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'ndungujan23@outlook.com'
-EMAIL_HOST_PASSWORD = '*@Invest1234'
-
-# Braintree settings
-BRAINTREE_MERCHANT_ID = env('BRAINTREE_MERCHANT_ID')  # Merchant ID
-BRAINTREE_PUBLIC_KEY = env('BRAINTREE_PUBLIC_KEY')  # Public Key
-BRAINTREE_PRIVATE_KEY = env('BRAINTREE_PRIVATE_KEY')  # Private key
-
-BRAINTREE_CONF = braintree.Configuration(
-    braintree.Environment.Sandbox,
-    BRAINTREE_MERCHANT_ID,
-    BRAINTREE_PUBLIC_KEY,
-    BRAINTREE_PRIVATE_KEY
-)
-
-# Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -63,8 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.sitemaps',
     'taggit',
+    'rest_framework',
 
     'phonenumber_field',
+    'django_daraja',
 
     'blog',
     'contact',
@@ -75,6 +54,9 @@ INSTALLED_APPS = [
     'shop.payment',
     'shop.products',
 ]
+
+# Application definition
+
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
@@ -188,3 +170,35 @@ REDIS_PORT = 6642
 REDIS_USER = 'default'
 REDIS_PASSWORD = 'HaWbUcMwDpmkReV3zxxc'
 REDIS_DB = 1
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-mail.outlook.com'
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'ndungujan23@outlook.com'
+EMAIL_HOST_PASSWORD = '*@Invest1234'
+
+# Braintree settings
+BRAINTREE_MERCHANT_ID = env('BRAINTREE_MERCHANT_ID')  # Merchant ID
+BRAINTREE_PUBLIC_KEY = env('BRAINTREE_PUBLIC_KEY')  # Public Key
+BRAINTREE_PRIVATE_KEY = env('BRAINTREE_PRIVATE_KEY')  # Private key
+
+BRAINTREE_CONF = braintree.Configuration(
+    braintree.Environment.Sandbox,
+    BRAINTREE_MERCHANT_ID,
+    BRAINTREE_PUBLIC_KEY,
+    BRAINTREE_PRIVATE_KEY
+)
+
+# Mpesa
+MPESA_ENVIRONMENT = env('MPESA_ENVIRONMENT')
+MPESA_CONSUMER_KEY = env('MPESA_CONSUMER_KEY')
+MPESA_CONSUMER_SECRET = env('MPESA_CONSUMER_SECRET')
+MPESA_SHORTCODE = env('MPESA_SHORTCODE')
+MPESA_SHORTCODE_TYPE = env('MPESA_SHORTCODE_TYPE')
+MPESA_EXPRESS_SHORTCODE = env('MPESA_EXPRESS_SHORTCODE')
+MPESA_PASSKEY = env('MPESA_PASSKEY')
+MPESA_INITIATOR_USERNAME = env('MPESA_INITIATOR_USERNAME')
+MPESA_INITIATOR_SECURITY_CREDENTIAL = env('MPESA_INITIATOR_SECURITY_CREDENTIAL')

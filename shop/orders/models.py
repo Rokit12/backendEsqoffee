@@ -12,13 +12,13 @@ class Order(models.Model):
     PAYMENT_OPTIONS = (
         ('cash', 'Cash'),
         ('mpesa', 'M-Pesa'),
-        ('other', 'Other'),
+        ('card', 'Card'),
     )
     PICKUP_OPTIONS = (
         ('pickup', 'Pickup'),
         ('delivered', 'Delivered'),
     )
-    braintree_id = models.CharField(max_length=150, blank=True)
+    transaction_id = models.CharField(max_length=150, blank=True)
     first_name = models.CharField(_('first name'), max_length=50)
     last_name = models.CharField(_('last name'), max_length=50)
     phone = models.CharField(_('phone'), max_length=30, blank=False, null=False)

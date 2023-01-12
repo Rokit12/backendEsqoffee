@@ -1,12 +1,15 @@
 import braintree
+from django_daraja.mpesa.core import MpesaClient
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from shop.orders.models import Order
 from .tasks import payment_completed
 
-
 # instantiate Braintree payment gateway
 gateway = braintree.BraintreeGateway(settings.BRAINTREE_CONF)
+
+# instantiate M-Pesa payment gatewat
+gateway_mpesa = MpesaClient()
 
 
 def payment_process(request):
@@ -15,27 +18,47 @@ def payment_process(request):
     total_cost = order.get_total_cost()
 
     if request.method == 'POST':
-        # retrieve nonce
-        nonce = request.POST.get('payment_method_nonce', None)
-        # create and submit transaction
-        result = gateway.transaction.sale({
-            'amount': f'{total_cost:.2f}',
-            'payment_method_nonce': nonce,
-            'options': {
-                'submit_for_settlement': True
-            }
-        })
-        if result.is_success:
-            # mark the order as paid
-            order.paid = True
-            # store the unique transaction id
-            order.braintree_id = result.transaction.id
-            order.save()
-            # launch asynchronous task
-            payment_completed.delay(order.id)
+        if order.payment_option == 'mpesa':
+            amount = int(total_cost)
+            account_reference = str(order.id)
+            phone_number = order.phone
+
+            if phone_number[0] == "+":
+                phone_number = phone_number[1:]
+            elif phone_number[0] == "0":
+                phone_number = "254" + phone_number[1:]
+
+            gateway_mpesa.stk_push(
+                phone_number,
+                amount,
+                account_reference,
+                order.id,
+                f'https://7646-105-163-156-27.in.ngrok.io/payment/mpesa/callback'
+            )
+
             return redirect('payment:done')
         else:
-            return redirect('payment:canceled')
+            # retrieve nonce
+            nonce = request.POST.get('payment_method_nonce', None)
+            # create and submit transaction
+            result = gateway.transaction.sale({
+                'amount': f'{total_cost:.2f}',
+                'payment_method_nonce': nonce,
+                'options': {
+                    'submit_for_settlement': True
+                }
+            })
+            if result.is_success:
+                # mark the order as paid
+                order.paid = True
+                # store the unique transaction id
+                order.braintree_id = result.transaction.id
+                order.save()
+                # launch asynchronous task
+                payment_completed.delay(order.id)
+                return redirect('payment:done')
+            else:
+                return redirect('payment:canceled')
     else:
         # generate token
         client_token = gateway.client_token.generate()
@@ -51,3 +74,8 @@ def payment_done(request):
 
 def payment_canceled(request):
     return render(request, 'payment/canceled.html')
+
+
+def mpesa_callback(request):
+    print(request)
+    pass
