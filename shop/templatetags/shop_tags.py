@@ -13,13 +13,16 @@ def show_story():
     return {'story': story}
 
 
+@register.inclusion_tag('includes/footer_about.html')
+def show_footer_about():
+    story = ShopStory.objects.all()
+    if story.count() > 0:
+        story = story[0]
+        return {'story': story}
+    return {'story': story}
+
+
 @register.inclusion_tag('includes/discover_testimonials.html')
 def show_testimonials():
     testimonials = ShopTestimonial.objects.all()
     return {'testimonials': testimonials}
-
-
-@register.inclusion_tag('includes/footer.html')
-def show_footer(count=3):
-
-    return {}
