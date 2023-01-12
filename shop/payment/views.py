@@ -6,17 +6,17 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from django_daraja.mpesa.core import MpesaClient
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from shop.orders.models import Order
 
+from .mpesa import MpesaGateway
 from .tasks import payment_completed
 from .serializers import MpesaCheckoutSerializer
 
 # instantiate Braintree and MobileMoney payment gateway
 gateway = braintree.BraintreeGateway(settings.BRAINTREE_CONF)
-gateway_mpesa = MpesaClient()
+gateway_mpesa = MpesaGateway()
 
 
 @authentication_classes([])
@@ -32,13 +32,16 @@ class MpesaCheckout(APIView):
             reference = serializer.data['reference']
             description = serializer.data['description']
 
-            res = MpesaClient().stk_push(
-                phone_number,
-                amount,
-                reference,
-                description,
-                f"https://{request.META['HTTP_HOST']}/payment/mpesa/callback"
-            )
+            payload = {
+                'request': request,
+                'data': {},
+                'amount': amount,
+                'phone_number': phone_number,
+                'account_reference': reference,
+                'transaction_description': description,
+                'callback_url': f"https://{request.META['HTTP_HOST']}/payment/mpesa/callback"
+            }
+            res = gateway_mpesa.stk_push_request(payload)
             return Response(res, status=200)
 
 

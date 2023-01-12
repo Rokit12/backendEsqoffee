@@ -1,5 +1,4 @@
 import weasyprint
-import decimal
 
 from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
@@ -9,15 +8,14 @@ from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse
 
-from django_daraja.mpesa.core import MpesaClient
-
 from shop.cart.cart import Cart
+from shop.payment.mpesa import MpesaGateway
 from .models import OrderItem, Order
 from .forms import OrderCreateForm
 from .tasks import order_created
 
 # instantiate MobileMoney payment gateway
-gateway_mpesa = MpesaClient()
+gateway_mpesa = MpesaGateway()
 
 
 def order_process(request):
@@ -62,15 +60,16 @@ def order_process(request):
                 elif phone_number[0] == "0":
                     phone_number = "254" + phone_number[1:]
 
-                gateway_mpesa.access_token()
-                a = gateway_mpesa.stk_push(
-                    phone_number,
-                    amount,
-                    account_reference,
-                    order.id,
-                    f"https://{request.META['HTTP_HOST']}/payment/mpesa/callback"
-                )
-                print(a.error_message)
+                payload = {
+                    'request': request,
+                    'data': {},
+                    'amount': amount,
+                    'phone_number': phone_number,
+                    'account_reference': account_reference,
+                    'transaction_description': account_reference,
+                    'callback_url': f"https://{request.META['HTTP_HOST']}/payment/mpesa/callback"
+                }
+                gateway_mpesa.stk_push_request(payload)
 
                 return redirect(reverse('payment:done'))
             else:
@@ -79,41 +78,6 @@ def order_process(request):
         form = OrderCreateForm()
 
     return render(request, template, {'cart': cart, 'form': form})
-
-
-def order_create(request):
-    template = 'orders/create.html'
-
-    cart = Cart(request)
-    if request.method == 'POST':
-        form = OrderCreateForm(request.POST)
-        if form.is_valid():
-            order = form.save(commit=False)
-            if cart.coupon:
-                order.coupon = cart.coupon
-                order.discount = cart.coupon.discount
-            order.save()
-            for item in cart:
-                OrderItem.objects.create(order=order,
-                                         product=item['product'],
-                                         price=item['price'],
-                                         quantity=item['quantity'])
-            # clear the cart
-            cart.clear()
-            # launch asynchronous task
-            order_created.delay(order.id)
-            # set the order in the session
-            request.session['order_id'] = order.id
-            # redirect for payment
-            return redirect(reverse('payment:process'))
-    else:
-        form = OrderCreateForm()
-
-    context = {
-        'cart': cart,
-        'form': form,
-    }
-    return render(request, template, context)
 
 
 @staff_member_required
