@@ -107,17 +107,17 @@
                             <div class="form-group">
                                 <div class="input-wrap">
                                     <div class="icon"><span class="ion-md-calendar"></span></div>
-                                     {{ reservation_form.date }}
+                                    {{ reservation_form.date }}
                                 </div>
                             </div>
                             <div class="form-group ml-md-4">
                                 <div class="input-wrap">
                                     <div class="icon"><span class="ion-ios-clock"></span></div>
-                                     {{ reservation_form.time }}
+                                    {{ reservation_form.time }}
                                 </div>
                             </div>
                             <div class="form-group ml-md-4">
-                                 {{ reservation_form.phone }}
+                                {{ reservation_form.phone }}
                             </div>
                         </div>
                         <div class="d-md-flex">
@@ -139,4 +139,93 @@
     {% include 'includes/our_services.html' %}
     {% include 'includes/discover_menu.html' %}
     {% include 'includes/our_stats.html' %}
+
+    <section class="ftco-gallery">
+        <div class="container-wrap">
+            <div class="row no-gutters">
+                <div class="col-md-3 ftco-animate">
+                    <a href="#" class="gallery img d-flex align-items-center"
+                       style="background-image: url(/static/images/gallery-1.jpg);">
+                        <div class="icon mb-4 d-flex align-items-center justify-content-center">
+                            <span class="icon-search"></span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 ftco-animate">
+                    <a href="#" class="gallery img d-flex align-items-center"
+                       style="background-image: url(/static/images/gallery-2.jpg);">
+                        <div class="icon mb-4 d-flex align-items-center justify-content-center">
+                            <span class="icon-search"></span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 ftco-animate">
+                    <a href="#" class="gallery img d-flex align-items-center"
+                       style="background-image: url(/static/images/gallery-3.jpg);">
+                        <div class="icon mb-4 d-flex align-items-center justify-content-center">
+                            <span class="icon-search"></span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 ftco-animate">
+                    <a href="#" class="gallery img d-flex align-items-center"
+                       style="background-image: url(/static/images/gallery-4.jpg);">
+                        <div class="icon mb-4 d-flex align-items-center justify-content-center">
+                            <span class="icon-search"></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ftco-appointment">
+        <div class="overlay"></div>
+        <div class="container-wrap">
+            <div class="row no-gutters d-md-flex align-items-center">
+                <div class="col-md-6 d-flex align-self-stretch">
+                    <div id="map"></div>
+                </div>
+                <div class="col-md-6 appointment ftco-animate">
+                    <h3 class="mb-3">Book a Table</h3>
+                    <form method="post" action="{% url 'orders:book_reservation' %}" class="appointment-form">
+                        {% csrf_token %}
+                        <div class="d-md-flex">
+                            <div class="form-group">
+                                {{ reservation_form.first_name }}
+                            </div>
+                            <div class="form-group ml-md-4">
+                                {{ reservation_form.last_name }}
+                            </div>
+                        </div>
+                        <div class="d-md-flex">
+                            <div class="form-group">
+                                <div class="input-wrap">
+                                    <div class="icon"><span class="ion-md-calendar"></span></div>
+                                    {{ reservation_form.date }}
+                                </div>
+                            </div>
+                            <div class="form-group ml-md-4">
+                                <div class="input-wrap">
+                                    <div class="icon"><span class="ion-ios-clock"></span></div>
+                                    {{ reservation_form.time }}
+                                </div>
+                            </div>
+                            <div class="form-group ml-md-4">
+                                {{ reservation_form.phone }}
+                            </div>
+                        </div>
+                        <div class="d-md-flex">
+                            <div class="form-group">
+                                {{ reservation_form.message }}
+                            </div>
+                            <div class="form-group ml-md-4">
+                                <input type="submit" value="Appointment" class="btn btn-primary py-3 px-4">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock content %}
