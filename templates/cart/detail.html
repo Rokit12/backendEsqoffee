@@ -117,11 +117,13 @@
                             <span>KES {{ cart.get_total_price_after_discount|floatformat:2 }}</span>
                         </p>
                     </div>
-                    <p class="text-center">
-                        <a href="{% url "orders:order_create" %}" class="btn btn-primary py-3 px-4">
-                            Proceed to Checkout
-                        </a>
-                    </p>
+                    {% if cart %}
+                        <p class="text-center">
+                            <a href="{% url "orders:order_create" %}" class="btn btn-primary py-3 px-4">
+                                Proceed to Checkout
+                            </a>
+                        </p>
+                    {% endif %}
                     <p class="text-center">
                         <a href="{% url "menu:product_list" %}" class="btn btn-primary py-3 px-4">
                             Continue Shopping
