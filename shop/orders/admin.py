@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.safestring import mark_safe
-from .models import Order, OrderItem
+from .models import Order, OrderItem, Reservation
 
 
 class OrderItemInline(admin.TabularInline):
@@ -59,3 +59,9 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ['pickup', 'paid', 'created', 'updated']
     inlines = [OrderItemInline]
     actions = [export_to_csv]
+
+
+@admin.register(Reservation)
+class ReservationAdmin(admin.ModelAdmin):
+    list_display = ['id', 'first_name', 'last_name', 'phone', 'date', 'time', 'message']
+    list_filter = ['first_name', 'last_name', 'date', 'time']

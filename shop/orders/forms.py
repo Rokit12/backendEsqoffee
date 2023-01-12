@@ -1,6 +1,6 @@
-from django.forms import ModelForm, TextInput, ChoiceField, RadioSelect, BooleanField
+from django.forms import ModelForm, TextInput, ChoiceField, RadioSelect, Textarea
 
-from .models import Order
+from .models import Order, Reservation
 
 PAYMENT_OPTIONS = [
     ('cash', 'Cash'),
@@ -11,6 +11,40 @@ PICKUP_OPTIONS = [
     ('pickup', 'Pickup'),
     ('delivered', 'Delivery'),
 ]
+
+
+class ReservationForm(ModelForm):
+    class Meta:
+        model = Reservation
+        fields = '__all__'
+        widgets = {
+            'first_name': TextInput(attrs={
+                'class': "form-control",
+                'placeholder': 'First Name'
+            }),
+            'last_name': TextInput(attrs={
+                'class': "form-control",
+                'placeholder': 'Last Name'
+            }),
+            'date': TextInput(attrs={
+                'class': "form-control appointment_date",
+                'placeholder': 'Date'
+            }),
+            'time': TextInput(attrs={
+                'class': "form-control appointment_time",
+                'placeholder': 'Time'
+            }),
+            'phone': TextInput(attrs={
+                'class': "form-control",
+                'placeholder': 'Phone',
+            }),
+            'message': Textarea(attrs={
+                'class': "form-control",
+                'placeholder': 'Message',
+                'cols': 30,
+                'rows': 2,
+            }),
+        }
 
 
 class OrderCreateForm(ModelForm):

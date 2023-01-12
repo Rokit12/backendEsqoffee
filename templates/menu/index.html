@@ -51,36 +51,36 @@
                 </div>
                 <div class="book p-4">
                     <h3>Book a Table</h3>
-                    <form action="#" class="appointment-form">
+                    <form method="post" action="{% url 'orders:book_reservation' %}" class="appointment-form">
+                        {% csrf_token %}
                         <div class="d-md-flex">
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="First Name">
+                                {{ reservation_form.first_name }}
                             </div>
                             <div class="form-group ml-md-4">
-                                <input type="text" class="form-control" placeholder="Last Name">
+                                {{ reservation_form.last_name }}
                             </div>
                         </div>
                         <div class="d-md-flex">
                             <div class="form-group">
                                 <div class="input-wrap">
                                     <div class="icon"><span class="ion-md-calendar"></span></div>
-                                    <input type="text" class="form-control appointment_date" placeholder="Date">
+                                     {{ reservation_form.date }}
                                 </div>
                             </div>
                             <div class="form-group ml-md-4">
                                 <div class="input-wrap">
                                     <div class="icon"><span class="ion-ios-clock"></span></div>
-                                    <input type="text" class="form-control appointment_time" placeholder="Time">
+                                     {{ reservation_form.time }}
                                 </div>
                             </div>
                             <div class="form-group ml-md-4">
-                                <input type="text" class="form-control" placeholder="Phone">
+                                 {{ reservation_form.phone }}
                             </div>
                         </div>
                         <div class="d-md-flex">
                             <div class="form-group">
-                                <textarea name="" id="" cols="30" rows="2" class="form-control"
-                                          placeholder="Message"></textarea>
+                                {{ reservation_form.message }}
                             </div>
                             <div class="form-group ml-md-4">
                                 <input type="submit" value="Appointment" class="btn btn-white py-3 px-4">

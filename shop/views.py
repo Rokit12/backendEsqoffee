@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import Shop, ShopTestimonial
 from .products.models import ProductCategory, Product
+from .orders.forms import ReservationForm
 
 
 def index(response):
@@ -13,12 +14,15 @@ def index(response):
 	categories = ProductCategory.objects.all()
 	products = Product.objects.filter(available=True)
 
+	reservation_form = ReservationForm()
+
 	context = {
 		'category': category,
 		'categories': categories,
 		'products': products,
 		'shop': shop,
 		'shop_testimonials': shop_testimonials,
+		'reservation_form': reservation_form,
 	}
 
 	return render(response, template, context)

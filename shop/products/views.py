@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from shop.cart.forms import CartAddProductForm
+from shop.orders.forms import ReservationForm
 from .models import ProductCategory, Product
 from .recommender import Recommender
 
@@ -16,11 +17,13 @@ def product_list(request, category_slug=None):
         products = products.filter(category=category)
 
     cart_product_form = CartAddProductForm()
+    reservation_form = ReservationForm()
     context = {
         'category': category,
         'categories': categories,
         'products': products,
         'cart_product_form': cart_product_form,
+        'reservation_form': reservation_form,
     }
 
     return render(request, template, context)

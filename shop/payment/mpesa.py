@@ -161,6 +161,7 @@ class MpesaGateway:
 
         transaction_data = MpesaTransactionSerializer(transaction).data
 
+        print(f'Transaction completed: {transaction_data}')
         logging.info("Transaction completed info {}".format(transaction_data))
 
         return Response({"status": "ok", "code": 0}, status=200)

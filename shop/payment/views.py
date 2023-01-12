@@ -51,10 +51,11 @@ class MpesaCallBack(APIView):
     def get(self, request):
         return Response({"status": "OK"}, status=200)
 
-    def post(self, request, *args, **kwargs):
-        logging.info("{}".format("Callback from MPESA"))
-        # return gateway_mpesa.parse_stk_result(request.body)
-        return Response(request.body, status=200)
+    def post(self, request):
+        logging.info("Callback from MPESA {}".format(request.body))
+        cb = gateway_mpesa.callback_handler(request.body)
+
+        return Response(cb, status=200)
 
 
 def payment_process(request):

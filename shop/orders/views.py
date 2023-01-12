@@ -11,11 +11,21 @@ from django.urls import reverse
 from shop.cart.cart import Cart
 from shop.payment.mpesa import MpesaGateway
 from .models import OrderItem, Order
-from .forms import OrderCreateForm
+from .forms import OrderCreateForm, ReservationForm
 from .tasks import order_created
 
 # instantiate MobileMoney payment gateway
 gateway_mpesa = MpesaGateway()
+
+
+def book_reservation(request):
+    if request.method == 'POST':
+        form = ReservationForm(request.POST)
+        if form.is_valid():
+            form.save()
+        else:
+            print(form.errors)
+    return redirect(reverse('home'))
 
 
 def order_process(request):
@@ -71,7 +81,7 @@ def order_process(request):
                 }
                 gateway_mpesa.stk_push_request(payload)
 
-                return redirect(reverse('payment:done'))
+                return redirect(reverse('home'))
             else:
                 return redirect(reverse('payment:process'))
     else:

@@ -1,11 +1,22 @@
 from decimal import Decimal
 from django.db import models
-from phonenumber_field.modelfields import PhoneNumberField
 from django.core.validators import MinValueValidator, \
                                    MaxValueValidator
 from django.utils.translation import gettext_lazy as _
 from shop.products.models import Product
 from shop.coupons.models import Coupon
+
+
+class Reservation(models.Model):
+    first_name = models.CharField(_('first name'), max_length=250)
+    last_name = models.CharField(_('last name'), max_length=250)
+    date = models.CharField(_('date'), max_length=50)
+    time = models.CharField(_('time'), max_length=50)
+    phone = models.CharField(_('phone'), max_length=30, blank=False, null=False)
+    message = models.TextField()
+
+    def __str__(self):
+        return f'{self.first_name} {self.last_name}'
 
 
 class Order(models.Model):
