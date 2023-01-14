@@ -9,13 +9,9 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 
 from shop.cart.cart import Cart
-from shop.payment.mpesa import MpesaGateway
 from .models import OrderItem, Order
 from .forms import OrderCreateForm, ReservationForm
 from .tasks import order_created
-
-# instantiate MobileMoney payment gateway
-gateway_mpesa = MpesaGateway()
 
 
 def book_reservation(request):
@@ -57,30 +53,7 @@ def order_process(request):
             request.session['order_id'] = order.id
 
             payment_option = order.payment_option
-            if payment_option == 'card':
-                # redirect for payment
-                return redirect(reverse('payment:process'))
-            elif payment_option == 'mpesa':
-                amount = int(order.get_total_cost())
-                account_reference = order.id
-
-                phone_number = order.phone
-                if phone_number[0] == "+":
-                    phone_number = phone_number[1:]
-                elif phone_number[0] == "0":
-                    phone_number = "254" + phone_number[1:]
-
-                payload = {
-                    'request': request,
-                    'data': {},
-                    'amount': amount,
-                    'phone_number': phone_number,
-                    'account_reference': account_reference,
-                    'transaction_description': account_reference,
-                    'callback_url': f"https://{request.META['HTTP_HOST']}/payment/mpesa/callback/"
-                }
-                gateway_mpesa.stk_push_request(payload)
-
+            if payment_option == 'cash':
                 return redirect(reverse('home'))
             else:
                 return redirect(reverse('payment:process'))

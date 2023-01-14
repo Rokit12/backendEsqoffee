@@ -22,3 +22,19 @@ class MpesaTransaction(models.Model):
 
     def __unicode__(self):
         return f"{self.transaction_no}"
+
+
+class RaveTransaction(models.Model):
+    STATUS = (
+        (1, "successful"),
+        (0, "failed")
+    )
+    tx_id = models.CharField(max_length=50, unique=True, blank=True, null=True)
+    tx_reference = models.CharField(default=uuid.uuid4, max_length=50, unique=True)
+    status = models.CharField(max_length=15, choices=STATUS, default=0)
+    amount = models.CharField(max_length=10)
+    phone_number = PhoneNumberField(null=False, blank=False)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.tx_id}"
